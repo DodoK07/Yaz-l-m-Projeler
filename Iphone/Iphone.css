@@ -1,0 +1,295 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: black;
+}
+.Reklam {
+  position: fixed;
+  display: flex;
+  width: 300px;
+  height: 600px;
+  left: 60px;
+  top: 50px;
+  z-index: -10;
+}
+.Iphone {
+  position: absolute;
+  left: 25px;
+  top: 50px;
+  width: 250px;
+  height: 500px;
+  background-color: rgba(28, 28, 30, 0.8);
+  border-radius: 40px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-sizing: border-box;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+  filter: brightness(0.5);
+  overflow: hidden;
+}
+
+.Iphone.active {
+  filter: brightness(1);
+  transform: scale(1.02);
+}
+
+.DynamicIsland {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  position: relative;
+  width: 80px;
+  height: 25px;
+  margin: 10px auto;
+  background-color: black;
+  box-sizing: border-box;
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.Iphone.active .DynamicIsland {
+  width: 80px;
+  height: 30px;
+}
+
+.Camera {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 30% 30%, #444, #111);
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px black;
+}
+.BGphoto {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url(BGphoto2.jpg);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.6s ease-out;
+  border-radius: 35px;
+}
+
+.Iphone.active .BGphoto {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.LockScreenContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  z-index: 5;
+}
+
+.Date {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.Time {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  font-size: 70px;
+  font-weight: 200;
+  margin-top: -5px;
+  opacity: 0;
+  transition: opacity 0.5s 0.2s;
+}
+
+.Iphone.active .Date,
+.Iphone.active .Time {
+  opacity: 1;
+}
+
+.Buttons {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.Iphone.active .Buttons {
+  opacity: 1;
+}
+
+.flash,
+.cam {
+  width: 45px;
+  height: 45px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+}
+
+.material-symbols-outlined {
+  font-size: 24px;
+}
+
+.HomeScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 50px 20px;
+  gap: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s ease;
+  z-index: 20;
+}
+
+.Iphone.unlocked .LockScreenContent,
+.Iphone.unlocked .Buttons {
+  opacity: 0;
+}
+
+.Iphone.unlocked .HomeScreen {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.HStop {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.Iphone.unlocked .HStop {
+  opacity: 1;
+}
+.HStop div:not(.HSTime) {
+  display: flex;
+  align-items: center;
+}
+.HStop .cell,
+.HStop .wifi,
+.HStop .battery {
+  margin-left: 4px;
+}
+
+.HSTime {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  padding: 0px 20px 0px 20px;
+}
+
+.HStop .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.HSRightIcons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 15px;
+}
+
+.HSRightIcons .material-symbols-outlined {
+  font-size: 13px;
+}
+
+.HSbody1 {
+  width: 100%;
+  height: 120px;
+  padding: 2px 2px;
+  display: flex;
+  justify-content: space-around;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background-color: transparent;
+}
+
+.Iphone.unlocked .HSbody1 {
+  opacity: 1;
+}
+
+.Weather {
+  width: 50%;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+
+.CloudOne {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(to bottom, #2c5d8f 0%, #a0b2c6 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.wOne{
+  left: 25px;
+  position: absolute;
+  font-size: 10px;
+  margin-top: 2px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: #ffffff;
+}
+
+.Calender {
+  width: 50%;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+
+.CloudTwo {
+  width: 90px;
+  height: 90px;
+  background-color: #D1D1D6;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.wTwo{
+  left: 25px;
+  position: absolute;
+  font-size: 10px;
+  margin-top: 2px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: #ffffff;
+}
