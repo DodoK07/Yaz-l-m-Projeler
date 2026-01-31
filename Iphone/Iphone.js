@@ -57,7 +57,7 @@ window.onload = function () {
     }
 
     // 4. ANALOG SAAT İKONU MEKANİZMASI
-    // Açı hesaplamaları (Makine mühendisliği hassasiyetiyle :)
+    // Açı hesaplamaları
     const secondDeg = seconds * 6; // 360 derece / 60 saniye
     const minuteDeg = minutes * 6 + seconds * 0.1; // Dakika + saniyenin etkisi
     const hourDeg = (now.getHours() % 12) * 30 + minutes * 0.5; // Saat + dakikanın etkisi
