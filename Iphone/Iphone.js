@@ -138,6 +138,35 @@ function closeApp() {
     appWindow.classList.remove("active");
   }
 }
+function dialDigit(digit) {
+  const display = document.getElementById("dialedNumber");
+  const addBtn = document.getElementById("addNumberBtn");
+  const delBtn = document.getElementById("deleteDigitBtn");
+
+  if (display && display.textContent.length < 15) {
+    display.textContent += digit;
+  }
+
+  if (display && display.textContent.length > 0) {
+    if (addBtn) addBtn.style.opacity = "1";
+    if (delBtn) delBtn.style.opacity = "1";
+  }
+}
+
+function deleteDigit() {
+  const display = document.getElementById("dialedNumber");
+  const addBtn = document.getElementById("addNumberBtn");
+  const delBtn = document.getElementById("deleteDigitBtn");
+
+  if (display) {
+    display.textContent = display.textContent.slice(0, -1);
+
+    if (display.textContent.length === 0) {
+      if (addBtn) addBtn.style.opacity = "0";
+      if (delBtn) delBtn.style.opacity = "0";
+    }
+  }
+}
 
 // --- Klavye Dinleyici (Keyboard Listener) ---
 // Belirlediğin tuşlara basıldığında closeApp motorunu tetikler.
@@ -170,20 +199,71 @@ function openApp(name, event) {
   // 3. Uygulama ismine göre mantık katmanına (Logic Layer) geçiyoruz:
 
   if (name === "Music") {
-    appWindow.classList.add("music-bg"); // Kırmızımsı arka plan
+    appWindow.className = "AppWindow active music-playing-mode";
+    appWindow.style.backgroundColor = "#ffffff";
+
+    appWindow.className = "AppWindow active music-dark-mode";
+    appWindow.style.backgroundColor = "#121212";
+
     content.innerHTML = `
-      <div class="music-player">
-        <div class="album-art"></div>
-        <div class="song-info">
-          <h3 style="font-size: 18px; margin-bottom: 5px;">Küsme Çiçekleri</h3>
-          <p style="opacity: 0.8;">Yalın</p>
+    <div class="music-player-container" style="height: 100%; width: 100%; background: linear-gradient(180deg, #2d1f3d 0%, #000000 100%); display: flex; flex-direction: column; color: #fff; font-family: -apple-system, sans-serif; position: relative; overflow: hidden;">
+      
+      <div style="padding: 40px 20px 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10;">
+        <div style="display: flex; align-items: center; color: #0a84ff; cursor: pointer;">
+          <span class="material-symbols-outlined">chevron_left</span>
+          <span style="font-size: 17px; font-weight: 500;">Music</span>
         </div>
-        <div class="controls">
-          <span class="material-symbols-outlined">skip_previous</span>
-          <span class="material-symbols-outlined" style="font-size: 50px;">play_circle</span>
-          <span class="material-symbols-outlined">skip_next</span>
+        <div style="font-size: 15px; font-weight: 500; opacity: 0.8;">buck-emode</div>
+        <div style="width: 24px;"></div> </div>
+
+      <div class="music-scroll-area" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding-bottom: 120px;">
+        
+        <div class="music-art-box" style="width: 85%; aspect-ratio: 1/1; margin: 20px 0; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/30/80/7e/30807e0b-2252-0730-a931-155e81d87178/22UMGIM92110.rgb.jpg/600x600bb.jpg" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
+
+        <div style="width: 85%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+          <div style="text-align: left;">
+            <h2 style="font-size: 22px; font-weight: bold; margin: 0; letter-spacing: -0.5px;">Lavender Haze</h2>
+            <p style="font-size: 17px; color: rgba(255,255,255,0.6); margin: 3px 0 0 0;">Taylor Swift</p>
+          </div>
+          <span class="material-symbols-outlined" style="background: rgba(255,255,255,0.1); border-radius: 50%; padding: 5px; font-size: 20px;">more_horiz</span>
+        </div>
+
+        <div style="width: 85%; margin-top: 30px;">
+          <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; position: relative;">
+            <div style="width: 45%; height: 100%; background: #fff; border-radius: 2px;"></div>
+            <div style="width: 8px; height: 8px; background: #fff; border-radius: 50%; position: absolute; top: -2px; left: 45%; margin-left: -4px;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 500;">
+            <span>1:45</span>
+            <span>-2:10</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 40px; margin-top: 25px;">
+          <span class="material-symbols-outlined" style="font-size: 38px;">fast_rewind</span>
+          <span class="material-symbols-outlined" style="font-size: 70px; font-variation-settings: 'FILL' 1;">pause_circle</span>
+          <span class="material-symbols-outlined" style="font-size: 38px;">fast_forward</span>
+        </div>
+
+        <div style="width: 85%; display: flex; align-items: center; gap: 12px; margin-top: 30px; opacity: 0.7;">
+          <span class="material-symbols-outlined" style="font-size: 16px;">volume_mute</span>
+          <div style="flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; position: relative;">
+            <div style="width: 70%; height: 100%; background: #fff; border-radius: 2px;"></div>
+          </div>
+          <span class="material-symbols-outlined" style="font-size: 16px;">volume_up</span>
+        </div>
+
       </div>
+
+      <div class="music-bottom-ui" style="position: absolute; bottom: 0; width: 100%; height: 90px; background: rgba(30, 30, 30, 0.6); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 0.5px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; padding-bottom: 20px; z-index: 100;">
+        <div class="m-tool"><span class="material-symbols-outlined">format_quote</span></div>
+        <div class="m-tool"><span class="material-symbols-outlined">airplay</span></div>
+        <div class="m-tool"><span class="material-symbols-outlined">list</span></div>
+      </div>
+
+    </div>
     `;
   } else if (name === "FaceTime") {
     appWindow.classList.add("facetime-bg"); // Yeşil arka plan
@@ -1030,6 +1110,400 @@ function openApp(name, event) {
         </div>
       </div>
 
+    </div>
+    `;
+  } else if (name === "Wallet") {
+    appWindow.className = "AppWindow active wallet-mode";
+    appWindow.style.backgroundColor = "#fff";
+
+    content.innerHTML = `
+    <div class="wallet-app-container" style="height: 100%; width: 100%; display: flex; flex-direction: column; background-color: #fff; font-family: -apple-system, sans-serif;">
+      
+      <div style="padding: 10px 20px; display: flex; justify-content: center; gap: 10px;">
+         <div style="background: #e3e3e8; border-radius: 10px; padding: 2px; display: flex;">
+            <span style="background: #fff; padding: 4px 15px; border-radius: 8px; font-size: 12px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">Cards</span>
+            <span style="padding: 4px 15px; font-size: 12px; color: #8e8e93;">Passes</span>
+         </div>
+      </div>
+
+      <div style="padding: 0 20px 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="font-size: 32px; font-weight: bold; margin: 0;">Cards</h1>
+        <div style="display: flex; gap: 15px;">
+           <span class="material-symbols-outlined" style="background: #e3e3e8; border-radius: 50%; padding: 5px; font-size: 20px;">list</span>
+           <span class="material-symbols-outlined" style="background: #e3e3e8; border-radius: 50%; padding: 5px; font-size: 20px;">add</span>
+        </div>
+      </div>
+
+      <div style="margin: 0 20px 20px 20px; background: #e3e3e8; border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
+         <span class="material-symbols-outlined" style="color: #8e8e93; font-size: 18px;">search</span>
+         <span style="color: #8e8e93; font-size: 14px; flex: 1;">Search</span>
+         <span class="material-symbols-outlined" style="color: #8e8e93; font-size: 18px;">mic</span>
+      </div>
+
+      <div class="cards-stack" style="flex: 1; position: relative; margin-top: 5px; padding: 0 10px;">
+        
+        <div class="wallet-card" style="background: linear-gradient(135deg, #00529b, #0076c0); top: 0px; z-index: 1;">
+          <div class="card-chip"></div>
+          <div class="card-logo">Ticket</div>
+        </div>
+
+        <div class="wallet-card" style="background: #9000ff; top: 25px; z-index: 2;">
+          <div class="card-logo" style="font-style: italic;">payzy</div>
+        </div>
+
+        <div class="wallet-card" style="background: #000; top: 50px; z-index: 3;">
+          <div class="card-logo" style="display: flex; align-items: center; gap: 4px;">
+            <span class="material-symbols-outlined" style="font-size: 14px;">apple</span>Cash
+          </div>
+        </div>
+
+        <div class="wallet-card" style="background: linear-gradient(135deg, #fff7e6, #ffe6cc, #ffcc99); top: 75px; z-index: 4; border: 0.5px solid #ddd;">
+          <span class="material-symbols-outlined" style="color: #555; font-size: 20px;">apple</span>
+        </div>
+
+        <div class="wallet-card" style="background: #003366; top: 100px; z-index: 5;">
+          <div style="font-size: 9px; font-weight: bold;">ALPHA BANK</div>
+          <div style="position: absolute; right: 10px; bottom: 10px; font-size: 14px; font-weight: 900;">VISA</div>
+        </div>
+      </div>
+
+      <div style="height: 80px; border-top: 0.5px solid #d1d1d6; display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px;">
+        <div class="wallet-tab active-tab"><span class="material-symbols-outlined">credit_card</span><span>Cards</span></div>
+        <div class="wallet-tab"><span class="material-symbols-outlined">payments</span><span>Cash</span></div>
+        <div class="wallet-tab"><span class="material-symbols-outlined">key</span><span>Keys</span></div>
+        <div class="wallet-tab"><span class="material-symbols-outlined">badge</span><span>ID's</span></div>
+        <div class="wallet-tab"><span class="material-symbols-outlined">inventory_2</span><span>Orders</span></div>
+      </div>
+
+    </div>
+    `;
+  } else if (name === "Settings") {
+    appWindow.className = "AppWindow active settings-mode";
+    appWindow.style.backgroundColor = "#f2f2f7"; // iOS Ayarlar gri arka planı
+
+    content.innerHTML = `
+    <div class="settings-app-container" style="height: 100%; width: 100%; display: flex; flex-direction: column; background-color: #f2f2f7; font-family: -apple-system, sans-serif; color: #000;">
+      
+      <div style="padding: 40px 20px 10px 20px; background: #f2f2f7; position: sticky; top: 0; z-index: 10;">
+        <h1 style="font-size: 34px; font-weight: bold; margin: 0;">Settings</h1>
+      </div>
+
+      <div style="margin: 10px 16px 20px 16px; background: #e3e3e8; border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
+         <span class="material-symbols-outlined" style="color: #8e8e93; font-size: 20px;">search</span>
+         <span style="color: #8e8e93; font-size: 17px;">Search</span>
+      </div>
+
+      <div class="settings-scroll-view" style="flex: 1; overflow-y: auto; padding-bottom: 40px;">
+        
+        <div class="settings-group" style="background: #fff; margin: 0 16px 20px 16px; border-radius: 10px; overflow: hidden;">
+          <div class="settings-item" style="display: flex; align-items: center; padding: 12px 16px; gap: 15px; border-bottom: 0.5px solid #e5e5ea;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: url('https://i.pravatar.cc/150?u=user') center/cover;"></div>
+            <div style="flex: 1;">
+              <h2 style="font-size: 20px; margin: 0; font-weight: 500;">Apple ID</h2>
+              <p style="font-size: 13px; color: #8e8e93; margin: 2px 0 0 0;">Apple Intelligence, iCloud+ & More</p>
+            </div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+        </div>
+
+        <div class="settings-group" style="background: #fff; margin: 0 16px 20px 16px; border-radius: 10px; overflow: hidden;">
+          
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px; border-bottom: 0.5px solid #e5e5ea;">
+            <div style="background: #8e8e93; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">settings</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">General</div>
+            <div style="color: #8e8e93; font-size: 15px; margin-right: 5px;">iPhone by User</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px; border-bottom: 0.5px solid #e5e5ea;">
+            <div style="background: #007aff; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">light_mode</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">Display & Brightness</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px; border-bottom: 0.5px solid #e5e5ea;">
+            <div style="background: #32ade6; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">apps</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">Home Screen & App Library</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px; border-bottom: 0.5px solid #e5e5ea;">
+            <div style="background: #007aff; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">accessibility</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">Accessibility</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px;">
+            <div style="background: #5ac8fa; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">image</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">Wallpaper</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+
+        </div>
+
+        <div class="settings-group" style="background: #fff; margin: 0 16px 20px 16px; border-radius: 10px; overflow: hidden;">
+          <div class="settings-item" style="display: flex; align-items: center; padding: 10px 16px; gap: 15px;">
+            <div style="background: #34c759; width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center;">
+              <span class="material-symbols-outlined" style="color: white; font-size: 18px;">battery_full</span>
+            </div>
+            <div style="flex: 1; font-size: 17px;">Battery</div>
+            <span class="material-symbols-outlined" style="color: #c7c7cc;">chevron_right</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="height: 30px; background: transparent;"></div>
+    </div>
+    `;
+  } else if (name === "Home") {
+    appWindow.className = "AppWindow active home-app-mode";
+    appWindow.style.backgroundColor = "#1c1c1e"; // Koyu mod tasarımı
+
+    content.innerHTML = `
+    <div class="home-app-container" style="height: 100%; width: 100%; display: flex; flex-direction: column; background: linear-gradient(180deg, #1c1c1e 0%, #2c2c2e 100%); font-family: -apple-system, sans-serif; color: #fff; position: relative;">
+      
+      <div class="home-scroll-view" style="flex: 1; overflow-y: auto; padding: 40px 20px 90px 20px;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <h1 style="font-size: 34px; font-weight: bold; margin: 0;">Home</h1>
+          <div style="display: flex; gap: 15px;">
+             <span class="material-symbols-outlined" style="background: rgba(255,255,255,0.1); border-radius: 50%; padding: 5px; font-size: 20px;">add</span>
+             <span class="material-symbols-outlined" style="background: rgba(255,255,255,0.1); border-radius: 50%; padding: 5px; font-size: 20px;">more_horiz</span>
+          </div>
+        </div>
+        <p style="color: rgba(255,255,255,0.6); font-size: 15px; margin-bottom: 25px;">3 Accessories are On</p>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;">
+          <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 10px 15px; border-radius: 20px; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
+            <span class="material-symbols-outlined" style="font-size: 18px;">bedtime</span> Good Night
+          </div>
+          <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 10px 15px; border-radius: 20px; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
+            <span class="material-symbols-outlined" style="font-size: 18px;">wb_sunny</span> Good Morning
+          </div>
+        </div>
+
+        <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 15px;">Favorite Accessories</h2>
+
+        <div class="home-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          
+          <div class="home-tile" style="background: rgba(255,255,255,0.9); color: #000; border-radius: 15px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100px;">
+            <span class="material-symbols-outlined" style="color: #ff9500; font-size: 24px; font-variation-settings: 'FILL' 1;">lightbulb</span>
+            <div>
+              <span style="display: block; font-weight: 600; font-size: 14px;">Living Room</span>
+              <span style="font-size: 12px; color: #666;">On • 80%</span>
+            </div>
+          </div>
+
+          <div class="home-tile" style="background: rgba(255,255,255,0.1); color: #fff; border-radius: 15px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100px;">
+            <span class="material-symbols-outlined" style="color: #fff; font-size: 24px;">lightbulb</span>
+            <div>
+              <span style="display: block; font-weight: 600; font-size: 14px;">Kitchen</span>
+              <span style="font-size: 12px; color: rgba(255,255,255,0.6);">Off</span>
+            </div>
+          </div>
+
+          <div class="home-tile" style="background: rgba(255,255,255,0.9); color: #000; border-radius: 15px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100px;">
+            <span class="material-symbols-outlined" style="color: #007aff; font-size: 24px;">ac_unit</span>
+            <div>
+              <span style="display: block; font-weight: 600; font-size: 14px;">AC Unit</span>
+              <span style="font-size: 12px; color: #666;">Cooling to 22°</span>
+            </div>
+          </div>
+
+          <div class="home-tile" style="background: rgba(255,255,255,0.1); color: #fff; border-radius: 15px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100px;">
+            <span class="material-symbols-outlined" style="color: #fff; font-size: 24px;">videocam</span>
+            <div>
+              <span style="display: block; font-weight: 600; font-size: 14px;">Front Door</span>
+              <span style="font-size: 12px; color: rgba(255,255,255,0.6);">Standby</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="home-bottom-tab" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 75px; background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(20px); border-top: 0.5px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; z-index: 100;">
+        <div style="text-align: center; color: #fff; font-size: 10px; display: flex; flex-direction: column; align-items: center;">
+          <span class="material-symbols-outlined" style="font-size: 24px !important; font-variation-settings: 'FILL' 1;">home</span>Home
+        </div>
+        <div style="text-align: center; color: rgba(255,255,255,0.5); font-size: 10px; display: flex; flex-direction: column; align-items: center;">
+          <span class="material-symbols-outlined" style="font-size: 24px !important;">grid_view</span>Automation
+        </div>
+        <div style="text-align: center; color: rgba(255,255,255,0.5); font-size: 10px; display: flex; flex-direction: column; align-items: center;">
+          <span class="material-symbols-outlined" style="font-size: 24px !important;">explore</span>Discover
+        </div>
+      </div>
+
+    </div>
+    `;
+  } else if (name === "Call") {
+    appWindow.className = "AppWindow active phone-app-mode";
+    appWindow.style.backgroundColor = "#fff";
+
+    content.innerHTML = `
+    <div class="phone-app-container" style="height: 100%; width: 100%; display: flex; flex-direction: column; background-color: #fff; font-family: -apple-system, sans-serif; color: #000; position: relative;">
+      
+      <div class="phone-number-display" style="height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 40px;">
+        <div id="dialedNumber" style="font-size: 36px; min-height: 44px; color: #000;"></div>
+        <div id="addNumberBtn" style="color: #007aff; font-size: 14px; margin-top: 5px; opacity: 0;">Add Number</div>
+      </div>
+      <div class="phone-keypad" style="flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 30px; margin-top: 5px; justify-items: center;">
+        <div class="key" onclick="dialDigit('1')"><span>1</span></div>
+        <div class="key" onclick="dialDigit('2')"><span>2</span><small>A B C</small></div>
+        <div class="key" onclick="dialDigit('3')"><span>3</span><small>D E F</small></div>
+        <div class="key" onclick="dialDigit('4')"><span>4</span><small>G H I</small></div>
+        <div class="key" onclick="dialDigit('5')"><span>5</span><small>J K L</small></div>
+        <div class="key" onclick="dialDigit('6')"><span>6</span><small>M N O</small></div>
+        <div class="key" onclick="dialDigit('7')"><span>7</span><small>P Q R S</small></div>
+        <div class="key" onclick="dialDigit('8')"><span>8</span><small>T U V</small></div>
+        <div class="key" onclick="dialDigit('9')"><span>9</span><small>W X Y Z</small></div>
+        <div class="key" onclick="dialDigit('*')"><span style="font-size: 24px; margin-top: 5px;">*</span></div>
+        <div class="key" onclick="dialDigit('0')"><span>0</span><small>+</small></div>
+        <div class="key" onclick="dialDigit('#')"><span>#</span></div>
+      </div>
+
+      <div class="phone-actions" style="height: 100px; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 35px;">
+        <div style="width: 70px; height: 70px; background: #34c759; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer;">
+          <span class="material-symbols-outlined" style="font-size: 35px; font-variation-settings: 'FILL' 1;">call</span>
+        </div>
+        <div id="deleteDigitBtn" onclick="deleteDigit()" style="position: absolute; right: 50px; opacity: 0; cursor: pointer;">
+          <span class="material-symbols-outlined" style="color: #8e8e93; font-size: 28px;">backspace</span>
+        </div>
+      </div>
+
+      <div class="phone-tab-bar" style="height: 75px; border-top: 0.5px solid #d1d1d6; display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px;">
+        <div class="p-tab"><span class="material-symbols-outlined">star</span><span>Favorites</span></div>
+        <div class="p-tab"><span class="material-symbols-outlined">schedule</span><span>Recents</span></div>
+        <div class="p-tab"><span class="material-symbols-outlined">account_circle</span><span>Contacts</span></div>
+        <div class="p-tab active-phone-tab"><span class="material-symbols-outlined">apps</span><span>Keypad</span></div>
+        <div class="p-tab"><span class="material-symbols-outlined">voicemail</span><span>Voicemail</span></div>
+      </div>
+
+    </div>
+    `;
+  } else if (name === "Safari") {
+    appWindow.className = "AppWindow active safari-mode";
+    appWindow.style.backgroundColor = "#ffffff";
+
+    content.innerHTML = `
+    <div class="safari-container" style="width: 100%; height: 100%; background: #fff; position: relative; display: flex; flex-direction: column; overflow: hidden;">
+      
+      <div class="safari-content" style="flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 150px; scrollbar-width: none;">
+        <h2 style="font-size: 28px; font-weight: bold; margin: 30px 0 20px 0; color: #000; font-family: -apple-system, sans-serif;">Favorites</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 15px; text-align: center;">
+          <div class="fav-item"><div class="fav-box" style="background:#f2f2f7; width:50px; height:50px; border-radius:12px; margin:0 auto; display:flex; align-items:center; justify-content:center;"><img src="https://www.google.com/favicon.ico" style="width:24px;"></div><span style="font-size:11px; margin-top:8px; display:block; color:#000;">Google</span></div>
+          <div class="fav-item"><div class="fav-box" style="background:#000; width:50px; height:50px; border-radius:12px; margin:0 auto; display:flex; align-items:center; justify-content:center;"><span class="material-symbols-outlined" style="color:white; font-size:26px;">apple</span></div><span style="font-size:11px; margin-top:8px; display:block; color:#000;">Apple</span></div>
+          <div class="fav-item"><div class="fav-box" style="background:#ff0000; width:50px; height:50px; border-radius:12px; margin:0 auto; display:flex; align-items:center; justify-content:center;"><span class="material-symbols-outlined" style="color:white; font-size:26px;">play_arrow</span></div><span style="font-size:11px; margin-top:8px; display:block; color:#000;">YouTube</span></div>
+          <div class="fav-item"><div class="fav-box" style="background:#007aff; width:50px; height:50px; border-radius:12px; margin:0 auto; display:flex; align-items:center; justify-content:center;"><span class="material-symbols-outlined" style="color:white; font-size:26px;">mail</span></div><span style="font-size:11px; margin-top:8px; display:block; color:#000;">iCloud</span></div>
+        </div>
+
+        <div style="margin-top: 40px; background: #f2f2f7; border-radius: 15px; padding: 18px; display: flex; align-items: center; gap: 15px;">
+          <span class="material-symbols-outlined" style="color: #34c759; font-size: 28px;">shield</span>
+          <div style="font-family: -apple-system, sans-serif;">
+            <div style="font-size: 14px; font-weight: bold; color:#000;">Privacy Report</div>
+            <div style="font-size: 12px; color: #666;">In the last seven days, Safari has prevented 48 trackers.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="safari-footer" style="position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(245, 245, 245, 0.92); backdrop-filter: blur(20px); border-top: 0.5px solid #d1d1d6; padding-bottom: 25px; z-index: 1000;">
+        
+        <div style="margin: 12px 16px; background: #fff; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative;">
+          <span class="material-symbols-outlined" style="font-size: 18px; color: #8e8e93; position: absolute; left: 12px;">text_format</span>
+          <span style="font-size: 15px; color: #000; font-family: -apple-system, sans-serif; display: flex; align-items: center; gap: 4px;">
+            <span class="material-symbols-outlined" style="font-size: 14px;">lock</span> google.com
+          </span>
+          <span class="material-symbols-outlined" style="font-size: 18px; color: #8e8e93; position: absolute; right: 12px;">refresh</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; align-items: center; padding: 5px 15px;">
+          <span class="material-symbols-outlined" style="color: #007aff; font-size: 28px; cursor: pointer;">chevron_left</span>
+          <span class="material-symbols-outlined" style="color: #007aff; font-size: 28px; cursor: pointer;">chevron_right</span>
+          <span class="material-symbols-outlined" style="color: #007aff; font-size: 28px; cursor: pointer;">share</span>
+          <span class="material-symbols-outlined" style="color: #007aff; font-size: 28px; cursor: pointer;">book</span>
+          <span class="material-symbols-outlined" style="color: #007aff; font-size: 28px; cursor: pointer;">tab</span>
+        </div>
+      </div>
+
+    </div>
+    `;
+  } else if (name === "Messeages") {
+    appWindow.className = "AppWindow active messages-mode";
+    appWindow.style.backgroundColor = "#ffffff";
+
+    content.innerHTML = `
+    <div class="messages-app-container" style="height: 100%; width: 100%; background: #fff; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: -apple-system, sans-serif;">
+      
+      <div style="padding: 40px 20px 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: #007aff; font-size: 17px;">Edit</span>
+        <span class="material-symbols-outlined" style="color: #000; font-size: 24px;">edit_square</span>
+      </div>
+
+      <div style="padding: 0 20px 15px 20px;">
+        <h1 style="font-size: 34px; font-weight: bold; margin: 0; color: #000;">Messages</h1>
+      </div>
+
+      <div class="messages-list" style="flex: 1; overflow-y: auto; padding: 0 15px 100px 15px; scrollbar-width: none;">
+        
+        <div class="msg-card" style="background: linear-gradient(90deg, #1ad6e1, #1ae1a1);">
+          <div class="msg-avatar" style="background-image: url('https://i.pravatar.cc/150?u=elijah')"></div>
+          <div class="msg-content">
+            <div class="msg-header">
+              <span class="msg-name">Elijah Snow</span>
+              <span class="msg-time">11:02 PM <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">chevron_right</span></span>
+            </div>
+            <p class="msg-text">Lets all be unique together until we realise we are all the same.</p>
+          </div>
+          <div class="unread-indicator"></div>
+        </div>
+
+        <div class="msg-card" style="background: linear-gradient(90deg, #a356de, #56a3de);">
+          <div class="msg-avatar" style="background-image: url('https://i.pravatar.cc/150?u=sydnee')"></div>
+          <div class="msg-content">
+            <div class="msg-header">
+              <span class="msg-name">Sydnee Myers</span>
+              <span class="msg-time">10:40 PM <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">chevron_right</span></span>
+            </div>
+            <p class="msg-text">I think I will buy the red car, or I will lease the blue one.</p>
+          </div>
+          <div class="unread-indicator"></div>
+        </div>
+
+        <div class="msg-card" style="background: linear-gradient(90deg, #de5656, #de9f56);">
+          <div class="msg-avatar" style="background-image: url('https://i.pravatar.cc/150?u=mya')"></div>
+          <div class="msg-content">
+            <div class="msg-header">
+              <span class="msg-name">Mya Carter</span>
+              <span class="msg-time">10:23 PM <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">chevron_right</span></span>
+            </div>
+            <p class="msg-text">Writing a list of random sentences is harder than I initially thought.</p>
+          </div>
+        </div>
+
+        <div class="msg-card" style="background: linear-gradient(90deg, #56decd, #56b0de);">
+          <div class="msg-avatar" style="background-image: url('https://i.pravatar.cc/150?u=addisyn')"></div>
+          <div class="msg-content">
+            <div class="msg-header">
+              <span class="msg-name">Addisyn Ashley</span>
+              <span class="msg-time">9:54 PM <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">chevron_right</span></span>
+            </div>
+            <p class="msg-text">I checked to make sure that he was still alive.</p>
+          </div>
+        </div>
+
+      </div>
     </div>
     `;
   } else {
